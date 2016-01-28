@@ -32,6 +32,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIndentifier, forIndexPath: indexPath)
        
         cell.textLabel?.text = restaurantNames[indexPath.row]
+        cell.imageView?.image = UIImage(named: "restaurant")
         
         return cell
         
