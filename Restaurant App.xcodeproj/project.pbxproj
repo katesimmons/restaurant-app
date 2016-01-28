@@ -97,9 +97,10 @@
 		F10D82451C599BAF006B7FE5 /* Restaurant App */ = {
 			isa = PBXGroup;
 			children = (
+				F10D82761C59CA01006B7FE5 /* Model */,
+				F10D82751C59C9F7006B7FE5 /* Controller */,
+				F10D82741C59C9EF006B7FE5 /* View */,
 				F10D82461C599BAF006B7FE5 /* AppDelegate.swift */,
-				F10D82481C599BAF006B7FE5 /* ViewController.swift */,
-				F10D824A1C599BAF006B7FE5 /* Main.storyboard */,
 				F10D824D1C599BAF006B7FE5 /* Assets.xcassets */,
 				F10D824F1C599BAF006B7FE5 /* LaunchScreen.storyboard */,
 				F10D82521C599BAF006B7FE5 /* Info.plist */,
@@ -123,6 +124,29 @@
 				F10D82681C599BAF006B7FE5 /* Info.plist */,
 			);
 			path = "Restaurant AppUITests";
+			sourceTree = "<group>";
+		};
+		F10D82741C59C9EF006B7FE5 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F10D824A1C599BAF006B7FE5 /* Main.storyboard */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		F10D82751C59C9F7006B7FE5 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				F10D82481C599BAF006B7FE5 /* ViewController.swift */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		F10D82761C59CA01006B7FE5 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -397,10 +421,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "Restaurant App/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.katesimmons.Restaurant-App";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -408,10 +435,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "Restaurant App/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.katesimmons.Restaurant-App";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
