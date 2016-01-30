@@ -50,5 +50,21 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
     }
 
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        let optionMenu = UIAlertController(title: nil, message: "Oh hai!", preferredStyle: .ActionSheet)
+
+        let continueAction = UIAlertAction(title: "Quick View", style: .Default, handler: nil)
+        let continueAction2 = UIAlertAction(title: "All Details", style: .Default, handler: nil)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        
+        optionMenu.addAction(continueAction)
+        optionMenu.addAction(continueAction2)
+        optionMenu.addAction(cancelAction)
+
+        
+        self.presentViewController(optionMenu, animated: true, completion: nil)
+        
+    }
 }
 
