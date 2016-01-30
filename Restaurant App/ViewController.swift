@@ -42,6 +42,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         cell.typeLabel?.text = restaurantTypes[indexPath.row]
         cell.thumbnailImage?.image = UIImage(named: restaurantImages[indexPath.row])
         
+        //make thumbnails circles
+        //cell.thumbnailImage.layer.cornerRadius = 30
+        //cell.thumbnailImage.clipsToBounds = true
+        
         return cell
         
     }
