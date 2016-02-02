@@ -17,6 +17,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     var restaurantLocations = ["Hong Kong", "Hong Kong", "Hong Kong", "Hong Kong", "Hong Kong", "Hong Kong", "Hong Kong", "Sydney", "Sydney", "Sydney", "New York", "New York", "New York", "New York", "New York", "New York", "New York", "London", "London", "London", "London"]
     
     var restaurantTypes = ["Coffee & Tea Shop", "Cafe", "Tea House", "Austrian / Causual Drink", "French", "Bakery", "Bakery", "Chocolate", "Cafe", "American / Seafood", "American", "American", "Breakfast & Brunch", "Coffee & Tea", "Coffee & Tea", "Latin American", "Spanish", "Spanish", "Spanish", "British", "Thai"]
+    
+    var restaurantIsVisited = [Bool](count: 21, repeatedValue: false)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,6 +44,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         cell.typeLabel?.text = restaurantTypes[indexPath.row]
         cell.thumbnailImage?.image = UIImage(named: restaurantImages[indexPath.row])
         
+        cell.accessoryType = restaurantIsVisited[indexPath.row] ? .Checkmark : .None
+        
         //make thumbnails circles
         //cell.thumbnailImage.layer.cornerRadius = 30
         //cell.thumbnailImage.clipsToBounds = true
@@ -51,20 +55,89 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
-        let optionMenu = UIAlertController(title: nil, message: "Oh hai!", preferredStyle: .ActionSheet)
 
-        let continueAction = UIAlertAction(title: "Quick View", style: .Default, handler: nil)
-        let continueAction2 = UIAlertAction(title: "All Details", style: .Default, handler: nil)
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
         
-        optionMenu.addAction(continueAction)
-        optionMenu.addAction(continueAction2)
+        let optionMenu = UIAlertController(title: nil, message: "What do you want to do?", preferredStyle: .ActionSheet)
+        
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
         optionMenu.addAction(cancelAction)
 
         
+        let callActionHandler = { (action:UIAlertAction!) -> Void in
+            //Body of closure
+            let alertMessage = UIAlertController(title: "Service Unavailable", message: "Sorry, the call feature is not available yet. Please retry later.", preferredStyle: .Alert)
+            alertMessage.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+            self.presentViewController(alertMessage, animated: true, completion: nil)
+
+    }
+        
+        let callAction = UIAlertAction(title: "Call " + "123-000-\(indexPath.row)", style: UIAlertActionStyle.Default, handler: callActionHandler)
+
+        optionMenu.addAction(callAction)
+        
+        
+        let isVisitedTitle = (restaurantIsVisited[indexPath.row]) ? "I've not been here" : "I've been here"
+        let isVisitedAction = UIAlertAction(title: isVisitedTitle, style: .Default, handler: {
+            (action:UIAlertAction!) -> Void in
+            // Retrieves the selected table cell using indexpath, which contains the index of the selected cell.
+            let cell = tableView.cellForRowAtIndexPath(indexPath)
+            self.restaurantIsVisited[indexPath.row] = (self.restaurantIsVisited[indexPath.row]) ? false : true
+            
+            // AccessoryType property of the cell with a check mark.
+            cell?.accessoryType = (self.restaurantIsVisited[indexPath.row]) ? .Checkmark : .None
+            })
+            optionMenu.addAction(isVisitedAction)
+        
         self.presentViewController(optionMenu, animated: true, completion: nil)
+    
+        tableView.deselectRowAtIndexPath(indexPath, animated: false)
         
     }
+
+    
+    //delete row
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    
+        if editingStyle == .Delete {
+        
+                //Delete the row from the data source
+            
+                restaurantNames.removeAtIndex(indexPath.row)
+                restaurantLocations.removeAtIndex(indexPath.row)
+                restaurantTypes.removeAtIndex(indexPath.row)
+                restaurantIsVisited.removeAtIndex(indexPath.row)
+                restaurantImages.removeAtIndex(indexPath.row)
+
+            //tableView.reloadData()
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+        }
+        
+        print("total item:\(restaurantNames.count)")
+        for name in restaurantNames {
+            print(name)
+        }
+    }
+    
+    
+    //social sharing
+    //    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+    //
+    //        //Social Sharing Button
+    ////
+    ////        let shareAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Share") { (action, indexpath) -> Void in
+    ////
+    ////
+    ////        })
+    //
+    //        //Delete Button
+    //
+    //        //Delete the row form the data source
+    //
+    //
+    //
+    //    }
+    
+ 
 }
 
