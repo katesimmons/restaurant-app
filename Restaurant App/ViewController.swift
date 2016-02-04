@@ -10,6 +10,9 @@ import UIKit
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
+    @IBOutlet weak var tableView: UITableView!
+    
+    
     var restaurantNames = ["Cafe Deadend", "Homei", "Teakha", "Cafe Loisl", "Petite Oyster", "For Kee Restaurant", "Po's Atelier", "Bourke Street Bakery", "Haigh's Chocolate", "Palomino Espresso", "Upstate", "Traif", "Graham Avenue Meats And Deli", "Waffle & Wolf", "Five Leaves", "Cafe Lore", "Confessional", "Barrafina", "Donostia", "Royal Oak", "CASK Pub and Kitchen"]
 
     var restaurantImages = ["cafedeadend.jpg", "homei.jpg", "teakha.jpg", "cafeloisl.jpg", "petiteoyster.jpg", "forkeerestaurant.jpg", "posatelier.jpg", "bourkestreetbakery.jpg", "haighschocolate.jpg", "palominoespresso.jpg", "upstate.jpg", "traif.jpg", "grahamavenuemeats.jpg", "wafflewolf.jpg", "fiveleaves.jpg", "cafelore.jpg", "confessional.jpg", "barrafina.jpg", "donostia.jpg", "royaloak.jpg", "thaicafe.jpg"]
@@ -96,48 +99,65 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
 
     
-    //delete row
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
     
-        if editingStyle == .Delete {
-        
-                //Delete the row from the data source
-            
-                restaurantNames.removeAtIndex(indexPath.row)
-                restaurantLocations.removeAtIndex(indexPath.row)
-                restaurantTypes.removeAtIndex(indexPath.row)
-                restaurantIsVisited.removeAtIndex(indexPath.row)
-                restaurantImages.removeAtIndex(indexPath.row)
+    
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
 
-            //tableView.reloadData()
+
+        // Social Sharing Button
+        let shareAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Share", handler: { (action, indexPath) -> Void in
+
+            let defaultText = "Just checking in at " + self.restaurantNames[indexPath.row]
+            if let imageToShare = UIImage(named: self.restaurantImages[indexPath.row]) {
+                let activityController = UIActivityViewController(activityItems: [defaultText, imageToShare], applicationActivities: nil)
+                self.presentViewController(activityController, animated: true, completion: nil)
+            }
+        })
+
+        shareAction.backgroundColor = UIColor(red: 28.0/255, green: 165.0/255, blue: 253.0/255.0, alpha: 1.0)
+
+        // Delete button
+        let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete",handler: { (action, indexPath) -> Void in
+
+            //Delete the row from the data source
+
+            self.restaurantNames.removeAtIndex(indexPath.row)
+            self.restaurantLocations.removeAtIndex(indexPath.row)
+            self.restaurantTypes.removeAtIndex(indexPath.row)
+            self.restaurantIsVisited.removeAtIndex(indexPath.row)
+            self.restaurantImages.removeAtIndex(indexPath.row)
+    
+
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        }
+            })
         
-        print("total item:\(restaurantNames.count)")
-        for name in restaurantNames {
-            print(name)
+            deleteAction.backgroundColor = UIColor(red: 202.0/255, green: 202.0/255, blue: 203.0/255.0, alpha: 1.0)
+
+        
+            return [deleteAction, shareAction]
+        
         }
-    }
     
+    //for navigation to detail page
     
-    //social sharing
-    //    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-    //
-    //        //Social Sharing Button
-    ////
-    ////        let shareAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Share") { (action, indexpath) -> Void in
-    ////
-    ////
-    ////        })
-    //
-    //        //Delete Button
-    //
-    //        //Delete the row form the data source
-    //
-    //
-    //
-    //    }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+
+        if segue.identifier == "showRestaurantDetail" {
+            if let indexPath = tableView.indexPathForSelectedRow {
+                let destinationController = segue.destinationViewController as! RestaurantDetailViewController
+            
+                destinationController.restaurantImage = restaurantImages[indexPath.row]
+                destinationController.restaurantName = restaurantNames[indexPath.row]
+                destinationController.restaurantLocation = restaurantLocations[indexPath.row]
+                destinationController.restaurantType = restaurantTypes[indexPath.row]
+                
     
- 
+                
+                }
+            
+            }
+        
+        }
+    
 }
 
