@@ -10,12 +10,8 @@ import UIKit
 
 class RestaurantDetailViewController: UIViewController {
     
-    //for passing data
-    var restaurantImage = ""
-    var restaurantName = ""
-    var restaurantLocation = ""
-    var restaurantType = ""
-    
+    //This variable will be using data passing.
+    var restaurantData = Restaurant!()
 
     @IBOutlet weak var restaurantImageView: UIImageView!
     @IBOutlet weak var restaurantNameLabel: UILabel!
@@ -28,10 +24,10 @@ class RestaurantDetailViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        restaurantImageView.image = UIImage(named: restaurantImage)
-        restaurantNameLabel.text = restaurantName
-        restaurantLocationLabel.text = restaurantLocation
-        restaurantTypeLabel.text = restaurantType
+        restaurantImageView.image = UIImage(named: restaurantData.image)
+        restaurantNameLabel.text = restaurantData.name
+        restaurantLocationLabel.text = restaurantData.location
+        restaurantTypeLabel.text = restaurantData.type
         
     }
     

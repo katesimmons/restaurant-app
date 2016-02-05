@@ -11,6 +11,30 @@ import UIKit
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     @IBOutlet weak var tableView: UITableView!
+    
+    var restaurant:[Restaurant] = [
+        Restaurant(name: "Cafe Deadend", type: "Coffee & Tea Shop", location: "Hong Kong", image: "cafedeadend.jpg", isVisited: false),
+        Restaurant(name: "Homei", type: "Cafe", location: "Hong Kong", image: "homei.jpg", isVisited: false),
+        Restaurant(name: "Teakha", type: "Tea House", location: "Hong Kong", image: "teakha.jpg", isVisited: false),
+        Restaurant(name: "Cafe loisl", type: "Austrian / Causual Drink", location: "Hong Kong", image: "cafeloisl.jpg", isVisited: false),
+        Restaurant(name: "Petite Oyster", type: "French", location: "Hong Kong", image: "petiteoyster.jpg", isVisited: false),
+        Restaurant(name: "For Kee Restaurant", type: "Bakery", location: "Hong Kong", image: "forkeerestaurant.jpg", isVisited: false),
+        Restaurant(name: "Po's Atelier", type: "Bakery", location: "Hong Kong", image: "posatelier.jpg", isVisited: false),
+        Restaurant(name: "Bourke Street Backery", type: "Chocolate", location: "Sydney", image: "bourkestreetbakery.jpg", isVisited: false),
+        Restaurant(name: "Haigh's Chocolate", type: "Cafe", location: "Sydney", image: "haighschocolate.jpg", isVisited: false),
+        Restaurant(name: "Palomino Espresso", type: "American / Seafood", location: "Sydney", image: "palominoespresso.jpg", isVisited: false),
+        Restaurant(name: "Upstate", type: "American", location: "New York", image: "upstate.jpg", isVisited: false),
+        Restaurant(name: "Traif", type: "American", location: "New York", image: "traif.jpg", isVisited: false),
+        Restaurant(name: "Graham Avenue Meats", type: "Breakfast & Brunch", location: "New York", image: "grahamavenuemeats.jpg", isVisited: false),
+        Restaurant(name: "Waffle & Wolf", type: "Coffee & Tea", location: "New York", image: "wafflewolf.jpg", isVisited: false),
+        Restaurant(name: "Five Leaves", type: "Coffee & Tea", location: "New York", image: "fiveleaves.jpg", isVisited: false),
+        Restaurant(name: "Cafe Lore", type: "Latin American", location: "New York", image: "cafelore.jpg", isVisited: false),
+        Restaurant(name: "Confessional", type: "Spanish", location: "New York", image: "confessional.jpg", isVisited: false),
+        Restaurant(name: "Barrafina", type: "Spanish", location: "London", image: "barrafina.jpg", isVisited: false),
+        Restaurant(name: "Donostia", type: "Spanish", location: "London", image: "donostia.jpg", isVisited: false),
+        Restaurant(name: "Royal Oak", type: "British", location: "London", image: "royaloak.jpg", isVisited: false),
+        Restaurant(name: "Thai Cafe", type: "Thai", location: "London", image: "thaicafe.jpg", isVisited: false)
+    ]
 
 /*
     var restaurantNames = ["Cafe Deadend", "Homei", "Teakha", "Cafe Loisl", "Petite Oyster", "For Kee Restaurant", "Po's Atelier", "Bourke Street Bakery", "Haigh's Chocolate", "Palomino Espresso", "Upstate", "Traif", "Graham Avenue Meats And Deli", "Waffle & Wolf", "Five Leaves", "Cafe Lore", "Confessional", "Barrafina", "Donostia", "Royal Oak", "CASK Pub and Kitchen"]
@@ -35,18 +59,20 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return restaurantNames.count //<<this is the Int
+        return restaurant.count //<<this is the Int
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cellIndentifier = "cell"
+        
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIndentifier, forIndexPath: indexPath) as! RestaurantTableViewCell
        
-        cell.nameLabel?.text = restaurantNames[indexPath.row]
-        cell.locationLabel?.text = restaurantLocations[indexPath.row]
-        cell.typeLabel?.text = restaurantTypes[indexPath.row]
-        cell.thumbnailImage?.image = UIImage(named: restaurantImages[indexPath.row])
+        //configure the cell
+        cell.nameLabel?.text = restaurant[indexPath.row].name
+        cell.locationLabel?.text = restaurant[indexPath.row].location
+        cell.typeLabel?.text = restaurant[indexPath.row].type
+        cell.thumbnailImage?.image = UIImage(named: restaurant[indexPath.row].image)
         
         cell.accessoryType = restaurantIsVisited[indexPath.row] ? .Checkmark : .None
         
@@ -84,14 +110,15 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let isVisitedTitle = (restaurantIsVisited[indexPath.row]) ? "I've not been here" : "I've been here"
         let isVisitedAction = UIAlertAction(title: isVisitedTitle, style: .Default, handler: {
             (action:UIAlertAction!) -> Void in
+            
             // Retrieves the selected table cell using indexpath, which contains the index of the selected cell.
             let cell = tableView.cellForRowAtIndexPath(indexPath)
             self.restaurantIsVisited[indexPath.row] = (self.restaurantIsVisited[indexPath.row]) ? false : true
             
             // AccessoryType property of the cell with a check mark.
             cell?.accessoryType = (self.restaurantIsVisited[indexPath.row]) ? .Checkmark : .None
-            })
-            optionMenu.addAction(isVisitedAction)
+        })
+        optionMenu.addAction(isVisitedAction)
         
         self.presentViewController(optionMenu, animated: true, completion: nil)
     
@@ -103,41 +130,40 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-
-
+        
+        
         // Social Sharing Button
         let shareAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Share", handler: { (action, indexPath) -> Void in
-
-            let defaultText = "Just checking in at " + self.restaurantNames[indexPath.row]
-            if let imageToShare = UIImage(named: self.restaurantImages[indexPath.row]) {
+            
+            let defaultText = "Just checking in at " + self.restaurant[indexPath.row].name
+            if let imageToShare = UIImage(named: self.restaurant[indexPath.row].image) {
                 let activityController = UIActivityViewController(activityItems: [defaultText, imageToShare], applicationActivities: nil)
                 self.presentViewController(activityController, animated: true, completion: nil)
             }
         })
-
+        
         shareAction.backgroundColor = UIColor(red: 28.0/255, green: 165.0/255, blue: 253.0/255.0, alpha: 1.0)
-
+        
         // Delete button
         let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete",handler: { (action, indexPath) -> Void in
-
+            
             //Delete the row from the data source
 
-            self.restaurantNames.removeAtIndex(indexPath.row)
-            self.restaurantLocations.removeAtIndex(indexPath.row)
-            self.restaurantTypes.removeAtIndex(indexPath.row)
+            self.restaurant.removeAtIndex(indexPath.row)
             self.restaurantIsVisited.removeAtIndex(indexPath.row)
-            self.restaurantImages.removeAtIndex(indexPath.row)
-    
-
+            
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-            })
+            
+        })
         
-            deleteAction.backgroundColor = UIColor(red: 202.0/255, green: 202.0/255, blue: 203.0/255.0, alpha: 1.0)
+        deleteAction.backgroundColor = UIColor(red: 202.0/255, green: 202.0/255, blue: 203.0/255.0, alpha: 1.0)
+        
+        
+        return [deleteAction, shareAction]
+        
+        
+    }
 
-        
-            return [deleteAction, shareAction]
-        
-        }
     
     //for navigation to detail page
     
@@ -147,13 +173,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             if let indexPath = tableView.indexPathForSelectedRow {
                 let destinationController = segue.destinationViewController as! RestaurantDetailViewController
             
-                destinationController.restaurantImage = restaurantImages[indexPath.row]
-                destinationController.restaurantName = restaurantNames[indexPath.row]
-                destinationController.restaurantLocation = restaurantLocations[indexPath.row]
-                destinationController.restaurantType = restaurantTypes[indexPath.row]
-                
-    
-                
+
+                destinationController.restaurantData = restaurant[indexPath.row]
                 }
             
             }
